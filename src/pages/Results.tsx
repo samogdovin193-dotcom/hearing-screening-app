@@ -43,7 +43,7 @@ export default function Results() {
   const navigate = useNavigate();
 
   const [scoreCorrect, setScoreCorrect] = useState(0);
-  const [scoreWrong, setScoreWrong] = useState(0);
+  //const [scoreWrong, setScoreWrong] = useState(0);
   const [answerHistory, setAnswerHistory] = useState<Answer[]>([]);
   const [subjectThreshold, setSubjectThreshold] = useState<number | null>(null);
   const [hearingLevel, setHearingLevel] = useState<number | null>(null);
@@ -62,7 +62,7 @@ export default function Results() {
 
     const data = JSON.parse(saved);
     setScoreCorrect(data.scoreCorrect || 0);
-    setScoreWrong(data.scoreWrong || 0);
+    //setScoreWrong(data.scoreWrong || 0);
     setAnswerHistory(data.answerHistory || []);
   }, []);
 
