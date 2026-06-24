@@ -37,9 +37,20 @@ export function useAppNavigation() {
     navigate(`/?${q.toString()}`);
   };
 
+  const goHomeWithConfirm = () => {
+  const confirmed = confirm(
+    "Naozaj sa chcete vrátiť na domovskú stránku?"
+  );
+
+  if (!confirmed) return;
+
+  navigate(`/?lang=${getLang()}`);
+};
+
   return {
     go,
     switchLang,
     getLang,
+    goHomeWithConfirm,
   };
 }

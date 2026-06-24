@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useAppNavigation } from '../utils/navigation';
 import { useCalibration } from '../hooks/useCalibration';
 import type { TestMode, EarSide } from '../types';
 
 export default function Calibration() {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const { goHomeWithConfirm } = useAppNavigation();
   const { go } = useAppNavigation();
 
   const mode = (searchParams.get('mode') || 'reproduktor') as TestMode;
@@ -165,64 +165,64 @@ export default function Calibration() {
   };
 
   return (
-    <div className="">
-      <h1 className="">
-        Kalibrácia — {modeTitle}
-      </h1>
+    <div>
+      <header><h1>Kalibrácia — {modeTitle}</h1></header>
 
-      <div className="">
-
+      <div className='glass-container'>
         {/* INSTRUCTIONS */}
-        <div className="">
-          <h2 className="">
-            Inštrukcie pre kalibráciu:
-          </h2>
+        <p className='instructions-text'><strong>Inštrukcie pre kalibráciu:</strong></p>
 
-          <ul>
-            <li>
-                <strong>Kalibráciu vykonajte v tichej miestnosti</strong>, bez rušivých zvukov. 
-                Zariadenie (napr. tablet) umiestnite tak, ako budete následne robiť meranie 
-                s testovanou osobou. Zabezpečte, aby bolo zariadenie vždy v rovnakej 
-                vzdialenosti a sklone ku kalibračnej/testovanej osobe.
-            </li>
+        <ul className='instructions-list'>
+          <li>
+              <strong>Kalibráciu vykonajte v tichej miestnosti</strong>, bez rušivých zvukov. 
+              Zariadenie (napr. tablet) umiestnite tak, ako budete následne robiť meranie 
+              s testovanou osobou. Zabezpečte, aby bolo zariadenie vždy v rovnakej 
+              vzdialenosti a sklone ku kalibračnej/testovanej osobe.
+          </li>
 
-            <li>
-                <strong>Nastavte hlasitosť vášho zariadenia na predposlednú najvyššiu úroveň hlasitosti</strong>, 
-                alebo na najvyššiu úroveň hlasitosti, ktorá je ešte pre kalibračnú osobu znesiteľná. 
-                Pre tento krok využite tlačidlo "Play", ktoré zabezpečí prehrávanie konštantného tónu. 
-                Počas prehrávania tónu nastavte hlasitosť zariadenia. 
-                <strong>Počas kalibrácie a ani potom, pri testovaní počutia nemeňte nastavenú hlasitosť!</strong>
-            </li>
+          <li>
+              <strong>Nastavte hlasitosť vášho zariadenia na predposlednú najvyššiu úroveň hlasitosti</strong>, 
+              alebo na najvyššiu úroveň hlasitosti, ktorá je ešte pre kalibračnú osobu znesiteľná. 
+              Pre tento krok využite tlačidlo "Play", ktoré zabezpečí prehrávanie konštantného tónu. 
+              Počas prehrávania tónu nastavte hlasitosť zariadenia.
+              <strong> Počas kalibrácie a ani potom, pri testovaní počutia nemeňte nastavenú hlasitosť!</strong>
+          </li>
 
-            <li>
-                Realizujte kalibračné nastavenie s prvou "kalibračnou osobou". Kalibračná osoba 
-                musí byť osoba bez detegovanej poruchy sluchu, ideálne v mladom až strednom veku.
-                Rovnako vykonajte kalibračné nastavenie s druhou "kalibračnou osobou".
-            </li>
+          <li>
+              Realizujte kalibračné nastavenie s prvou "kalibračnou osobou". Kalibračná osoba 
+              musí byť osoba bez detegovanej poruchy sluchu, ideálne v mladom až strednom veku.
+              Rovnako vykonajte kalibračné nastavenie s druhou "kalibračnou osobou".
+          </li>
 
-            <li>
-                Následne môžete pristúpiť k testovaniu osôb pomocou nakalibrovaného systému 
-                (zariadenia a aplikácie).
-            </li>
-          </ul>
+          <li>
+              Následne môžete pristúpiť k testovaniu osôb pomocou nakalibrovaného systému 
+              (zariadenia a aplikácie).
+          </li>
+        </ul>
 
-          <button
-            onClick={toggleInstructions}
-            className=""
-          >
+        {/* FIRST BUTTON */}
+        <button
+          onClick={toggleInstructions}
+          className={`calibration-btn btn-primary ${isInstructionsPlaying ? "stop" : ""}`}
+        >
+          <span className="icon">
+            {isInstructionsPlaying ? "⏹" : "▶"}
+          </span>
+
+          <span className="btn-text">
             {isInstructionsPlaying
-              ? '⏹ Zastaviť prehrávanie'
-              : '▶ Prehrať inštrukcie'}
-          </button>
-        </div>
+              ? "Zastaviť prehrávanie"
+              : "Prehrať inštrukcie"}
+          </span>
+        </button>
+      </div>
 
-        {/* END CONDITIONS */}
-        <div className="">
-          <h2 className="">
-            Kalibračný test sa ukončí:
-          </h2>
+      {/* END CONDITIONS */}
+      <div>
+        <div className="glass-container">
+          <p className="instructions-text"><strong>Kalibračný test sa ukončí:</strong></p>
 
-          <ul>
+          <ul className='instructions-list'>
             <li>
                 ak prejde cez všetkých 10 kôl
             </li>
@@ -234,51 +234,62 @@ export default function Calibration() {
             </li>
           </ul>
 
+          {/* SECOND BUTTON */}
           <button
             onClick={toggleUkoncenie}
-            className=""
+            className={`calibration-btn btn-primary ${isUkonceniePlaying ? "stop" : ""}`}
           >
-            {isUkonceniePlaying
-              ? '⏹ Zastaviť prehrávanie'
-              : '▶ Prehrať podmienky ukončenia'}
-          </button>
-        </div><br />
+            <span className="icon">
+              {isUkonceniePlaying ? "⏹" : "▶"}
+            </span>
 
-        {/* CONSTANT TONE */}
-        <div className="">
-          <button
-            onClick={toggleTone}
-            className=""
-          >
-            {isTonePlaying
-              ? '⏹ Zastaviť kalibračný tón'
-              : '▶ Spustiť kalibračný tón'}
+            <span className="btn-text">
+              {isUkonceniePlaying
+                ? "Zastaviť prehrávanie"
+                : "Prehrať podmienky ukončenia"}
+            </span>
           </button>
         </div>
 
-        {/* ACTIONS */}
-        <div className="">
-          <button onClick={startCalibrationTest}>
+        {/* CONSTANT TONE BUTTON */}    
+        <button
+          onClick={toggleTone}
+          className={`calibration-btn btn-primary ${isTonePlaying ? "stop" : ""}`}
+        >
+          <span className="icon">
+            {isTonePlaying ? "⏹" : "▶"}
+          </span>
+
+          <span className="btn-text">
+            {isTonePlaying
+              ? "Zastaviť kalibračný tón"
+              : "Spustiť kalibračný tón"}
+          </span>
+        </button>
+
+        {/* ACTION BUTTONS */}
+        <div className="buttons-container">
+          <button onClick={startCalibrationTest} className='button big-btn green'>
             Spustiť kalibráciu
-          </button><br />
+          </button>
 
-          <button onClick={showRecords} disabled={loading}>
-            Zobraziť kalibrácie ({records.length})
-          </button><br />
+          <button onClick={showRecords} disabled={loading} className='button big-btn green'>
+            Zobraziť uložené kalibrácie ({records.length})
+          </button>
 
-          <button onClick={handleClear}>
+          <button onClick={handleClear} className='button big-btn red'>
             Vymazať kalibrácie
           </button>
         </div>
-      </div><br />
+      </div>
 
       {/* NAVIGATION */}
-      <div className="">
-        <button onClick={() => go("/manual")}>
-          <img src="/assets/sk/images/back.png" alt="Späť" className="" />
+      <div className="outer">
+        <button onClick={() => go("/manual")} className='menu-button'>
+          <img src="/assets/sk/images/back.png" alt="Späť" className="menu-btn" />
         </button>
-        <button onClick={() => navigate(`/?lang=${lang}`)} className="">
-          <img src="/assets/sk/images/home.png" alt="Domov" className="" />
+        <button onClick={goHomeWithConfirm} className="menu-button">
+          <img src="/assets/sk/images/home.png" alt="Domov" className="menu-btn" />
         </button>
       </div>
     </div>

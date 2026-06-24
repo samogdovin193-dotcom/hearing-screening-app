@@ -1,11 +1,8 @@
 import { useAppNavigation } from '../utils/navigation';
-import { useNavigate } from 'react-router-dom';
 
 export default function TestEarSelection() {
   const { go } = useAppNavigation();
-  const navigate = useNavigate();
-
-  const lang = new URLSearchParams(window.location.search).get("lang") || "sk";
+  const { goHomeWithConfirm } = useAppNavigation();
 
   const selectEar = (side: 'lave' | 'prave') => {
     go('/manual', {
@@ -15,42 +12,41 @@ export default function TestEarSelection() {
   };
 
   return (
-    <div className="">
-      <div className="">
-        <h1 className="">
-          Zvoľ si <i>uško</i>,<br />ktoré hláskom pošteklím...
-        </h1>
+    <div>
+      <header><h1 className="">Zvoľ si <i>uško</i>,<br />ktoré hláskom pošteklím ...</h1></header>
 
-        <div className="space-y-6">
-          <button
-            onClick={() => selectEar('lave')}
-            className=""
-          >
-            Ľavé uško
-          </button>
+      <br /><br /><br />
 
-          <button
-            onClick={() => selectEar('prave')}
-            className=""
-          >
-            Pravé uško
-          </button>
-        </div>
+      <div className="outer">
+        <button
+          onClick={() => selectEar('lave')}
+          className="button"
+        >
+          Ľavé uško
+        </button>
 
-        <div className="">
-          <button
-            onClick={() => go('/select')}
-            className=""
-          >
-            <img src="/assets/sk/images/back.png" alt="Späť" className="" />
-          </button>
-          <button
-            onClick={() => navigate(`/?lang=${lang}`)}
-            className=""
-          >
-            <img src="/assets/sk/images/home.png" alt="Domov" className="" />
-          </button>
-        </div>
+        <button
+          onClick={() => selectEar('prave')}
+          className="button"
+        >
+          Pravé uško
+        </button>
+      </div>
+
+      <br /><br /><br />
+      <div className="outer">
+        <button
+          onClick={() => go('/select')}
+          className="menu-button"
+        >
+          <img src="/assets/sk/images/back.png" alt="Späť" className="menu-btn" />
+        </button>
+        <button
+          onClick={goHomeWithConfirm}
+          className="menu-button"
+        >
+          <img src="/assets/sk/images/home.png" alt="Domov" className="menu-btn" />
+        </button>
       </div>
     </div>
   );

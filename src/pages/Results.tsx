@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { getCalibrationByCategory } from '../lib/db';
+import { useAppNavigation } from '../utils/navigation';
 import type { Answer, TestMode, EarSide } from '../types';
 
 
@@ -34,13 +35,13 @@ const romMap: Record<string, string> = {
 };
 
 const levelToDbMap: Record<number, string> = {
-  10: "0 dB", 9: "-10 dB", 8: "-20 dB", 7: "-30 dB", 6: "-35 dB",
-  5: "-40 dB", 4: "-45 dB", 3: "-50 dB", 2: "-55 dB", 1: "-60 dB"
+  10: "0 dBFS", 9: "-10 dBFS", 8: "-20 dBFS", 7: "-30 dBFS", 6: "-35 dBFS",
+  5: "-35 dBFS", 4: "-40 dBFS", 3: "-40 dBFS", 2: "-45 dBFS", 1: "-45 dBFS"
 };
 
 export default function Results() {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const { goHomeWithConfirm } = useAppNavigation();
 
   const [scoreCorrect, setScoreCorrect] = useState(0);
   //const [scoreWrong, setScoreWrong] = useState(0);
@@ -123,7 +124,11 @@ export default function Results() {
   // -------------------------
   const compareWithCalibration = async (threshold: number | null) => {
     if (threshold === null) {
-      setInterpretation(<p className="">Žiadna správna odpoveď – nemožno porovnať.</p>);
+      setInterpretation(
+        <p className="no-comparison">
+          Žiadna správna odpoveď – nemožno porovnať.
+        </p>
+      );
       return;
     }
 
@@ -138,9 +143,13 @@ export default function Results() {
 
       if (!records.length) {
         setInterpretation(
-          <div className="">
-            <strong>Žiadne kalibrácie pre tento režim.</strong><br />
-            Pre porovnanie je potrebné vykonať aspoň 2 kalibrácie.
+          <div className="no-calibration-box">
+            <p className="no-calibration-title">
+              <strong>Žiadne kalibrácie pre tento režim.</strong>
+            </p>
+            <p className="no-calibration-text">
+              Pre porovnanie je potrebné vykonať aspoň 2 kalibrácie.
+            </p>
           </div>
         );
         return;
@@ -199,21 +208,35 @@ export default function Results() {
         `;
       }
 
-      setInterpretation(
-        <div className="">
-          <p><strong>Priemerný prah (kalibrácie):</strong> úroveň {average} ({records.length} záznamov)</p>
-          <p><strong>Váš prah porozumenia reči:</strong> úroveň {threshold}</p>
+      const regimeText =
+        ctx.mode === "reproduktor"
+          ? "reproduktor"
+          : `slúchadlá (${ctx.side === "lave" ? "ľavé" : "pravé"} ucho)`;
 
-          <div>
-            <strong>Interpretácia:</strong><br />
-            <span dangerouslySetInnerHTML={{ __html: interpHTML }} />
+      setInterpretation(
+        <div className="comparison-box">
+          <p className="comparison-text">
+            <strong>Priemerný prah porozumenia reči ({regimeText})</strong>: úroveň {average}
+            <small className="comparison-meta"> (z {records.length} kalibrácií)</small>
+          </p>
+
+          <p className="comparison-text">
+            <strong>Tvoj prah porozumenia reči</strong>: úroveň {threshold}
+          </p>
+
+          <div className="comparison-interpretation">
+            <p className="interpretation-text">
+              <strong>Interpretácia:</strong>
+              <br />
+              <span dangerouslySetInnerHTML={{ __html: interpHTML }} />
+            </p>
           </div>
         </div>
       );
 
     } catch (err) {
       console.error(err);
-      setInterpretation(<p className="">Chyba pri načítaní kalibrácií.</p>);
+      setInterpretation(<p className="result-error">Chyba pri načítaní kalibrácií.</p>);
     }
   };
 
@@ -225,43 +248,36 @@ export default function Results() {
   const wordMap = lang === "rom" ? romMap : skMap;
 
   return (
-    <div className="">
-      <h1 className="">Vyhodnotenie</h1>
+    <div>
+      <header><h1>Vyhodnotenie</h1></header>
 
-      <p>
+      <p className='text'>
         Upozornenie: Nasledujúce údaje sú orientačné. Ak bola vykonaná kalibrácia a test podľa inštrukcií správne, 
         a testovací subjekt dosiahol vyšší prah porozumenia/počutia v porovnaní s kalibračnými úrovňami, 
-        môže to znamenať, že je vhodné poradiť sa so svojim lekárom a zvážiť audiologické vyšetrenie testovaného subjektu.
-      </p>
+        môže to znamenať, že je vhodné poradiť sa so svojim lekárom a zvážiť audiologické vyšetrenie testovaného subjektu.</p>
 
       <br />
 
-      <div className="">
-        <div className="">
-          <p className="">
-            Prah porozumenia reči: {subjectThreshold !== null ? `Úroveň ${subjectThreshold}` : "Žiadna správna odpoveď"}
-          </p>
-        </div>
+      <div>
+        <p className="text">
+          Prah porozumenia reči: {subjectThreshold !== null ? `úroveň ${subjectThreshold} (z 10)` : "Žiadna správna odpoveď"}
+        </p>
 
-        <div className="">
-          <p className="">
-            Prah počutia reči: {hearingLevel !== null ? `Úroveň ${hearingLevel}` : "—"}
-          </p>
-        </div>
+        <p className="text">
+          Prah počutia reči: {hearingLevel !== null ? `úroveň ${hearingLevel} (z 10)` : "—"}
+        </p>
       </div>
 
-      <div className="mb-10">{interpretation}</div>
+      <div id="hearingComparison">{interpretation}</div>
 
-      <div className="">
-        <h3 className="">Tabuľka odpovedí</h3>
-
-        <table className="">
-          <thead className="">
+      <div>
+        <table id="historyTable">
+          <thead>
             <tr>
-              <th className="">Úroveň</th>
-              <th className="">Správna odpoveď</th>
-              <th className="">Vaša odpoveď</th>
-              <th className="">Odstupy Hlasitosti</th>
+              <th>Úroveň</th>
+              <th>Správna odpoveď</th>
+              <th>Vaša odpoveď</th>
+              <th>Odstupy hlasitostí</th>
             </tr>
           </thead>
 
@@ -286,15 +302,20 @@ export default function Results() {
         </table>
       </div>
 
-      <div>
-        <p>
-          Celková úspešnosť: <span>{percentage}%</span>
-        </p>
-      </div>
+      <p className="text percentage-small">
+        Celková úspešnosť: <span>{percentage}%</span>
+      </p>
 
-      <div>
-        <button onClick={() => navigate(`/?lang=${lang}`)} className="">
-            <img src="/assets/sk/images/home.png" alt="Domov" className="" />
+      <br />
+
+      <p className="text">
+        Poznámka: Odstupy hlasitosti jednotlivých úrovní,
+        sú realizované len na základe digitálnej hladiny hlasitosti
+      </p>
+
+      <div className="outer">
+        <button onClick={goHomeWithConfirm} className='menu-button'>
+            <img src="/assets/sk/images/home.png" alt="Domov" className="menu-btn" />
           </button>
       </div>
     </div>

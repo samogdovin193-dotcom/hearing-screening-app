@@ -7,6 +7,7 @@ export default function Finish() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { go } = useAppNavigation();
+  const { goHomeWithConfirm } = useAppNavigation();
 
 
   const isCalibration = searchParams.get('calibration') === '1';
@@ -92,46 +93,54 @@ export default function Finish() {
   // ==================================================
   if (isCalibration) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center">
-        <h1 className="text-4xl font-bold text-green-600 mb-10">
-          Gratulujem! Dostali ste sa na koniec testu.
-        </h1>
+      <div>
+      
+      <header><h1>Gratulujem! Dostali ste sa na koniec testu.</h1></header>
+      
+        <div className="result-container">
 
-        {lastCorrectLevel !== null ? (
-          <>
-            <p className="text-xl mb-3">
-              Posledná správna odpoveď:
+          {lastCorrectLevel !== null ? (
+            <>
+              <p className="result-text">
+                Posledná správna odpoveď:
+              </p>
+
+              <p className="result-success">
+                úroveň {lastCorrectLevel}
+              </p>
+
+              <p className="result-text">
+                <em>Toto bude uložené ako kalibračný prah zdravého sluchu.</em>
+              </p>
+            </>
+          ) : (
+            <p className="result-error">
+              Žiadna správna odpoveď – kalibrácia nie je možná.
             </p>
+          )}
 
-            <p className="text-4xl font-bold text-green-700 mb-4">
-              úroveň {lastCorrectLevel}
-            </p>
+          <div>
+            <button
+              onClick={saveCalibrationAndGoBack}
+              disabled={lastCorrectLevel === null}
+              className={`finish-btn btn-save ${lastCorrectLevel === null ? "disabled-btn" : ""}`}
+            >
+              Uložiť ako kalibráciu
+            </button>
 
-            <p className="italic text-gray-600 mb-10">
-              Toto bude uložené ako kalibračný prah zdravého sluchu.
-            </p>
-          </>
-        ) : (
-          <p className="text-red-600 text-xl mb-10">
-            Žiadna správna odpoveď – kalibrácia nie je možná.
-          </p>
-        )}
+            <button
+              onClick={() => {
+                const confirmed = confirm("Naozaj zahodiť túto kalibráciu?");
 
-        <div className="flex flex-col gap-4 w-full max-w-sm">
-          <button
-            onClick={saveCalibrationAndGoBack}
-            disabled={lastCorrectLevel === null}
-            className="big-button bg-green-600 hover:bg-green-700 text-white disabled:opacity-50"
-          >
-            Uložiť ako kalibráciu
-          </button>
+                if (!confirmed) return;
 
-          <button
-            onClick={goBackToManual}
-            className="big-button bg-gray-500 hover:bg-gray-600 text-white"
-          >
-            Zahodiť a vrátiť sa
-          </button>
+                goBackToManual();
+              }}
+              className="finish-btn btn-discard"
+            >
+              Zahodiť a vrátiť sa
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -141,48 +150,36 @@ export default function Finish() {
   // NORMAL TEST PAGE
   // ==================================================
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center">
-      <header className="mb-10">
-        <h1 className="text-4xl font-bold text-green-600">
-          Gratulujem! Dostali ste sa na koniec testu.
-        </h1>
-      </header>
+    <div>
+      
+      <header><h1>Gratulujem! Dostali ste sa na koniec testu.</h1></header>
 
-      <div className="mb-12">
+      <div className="finish-robot-wrapper">
         <div
           onClick={goToResults}
-          className="cursor-pointer hover:scale-110 active:scale-95 transition-transform duration-300"
+          className="finish-robot-section"
         >
           <img
             src={`/assets/${lang}/images/super_robot.gif`}
             alt="Robot Tomáš"
-            className="w-80 h-80 object-contain mx-auto"
+            className="finish-robot-img"
           />
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-6 mb-10">
-        <button
-          onClick={() => navigate(`/?lang=${lang}`)}
-        >
-          <img src="/assets/sk/images/home.png" alt="Domov" className="w-12 h-12" />
+      <div className="outer">
+        <button onClick={goHomeWithConfirm} className='menu-button'>
+          <img src="/assets/sk/images/home.png" alt="Domov" className="menu-btn" />
         </button>
 
-        <button
-          onClick={goToResults}
-          className="big-button bg-blue-600 hover:bg-blue-700 text-white px-10"
-        >
-          <img src="/assets/sk/images/forward.png" alt="Domov" className="w-12 h-12" />
+        <button onClick={goToResults} className='menu-button'>
+          <img src="/assets/sk/images/forward.png" alt="Domov" className="menu-btn" />
         </button>
       </div>
 
-      <p className="text-lg text-gray-700">
-        Hru ukončíte zatvorením prehliadača.
-      </p>
+      <p className="action-message">Hru ukončíte zatvorením prehliadača.</p>
+      <p className="action-message">Kliknutím na robota zobrazíte celkové vyhodnotenie vášho testu.</p>
 
-      <p className="text-lg text-gray-700 mt-3 max-w-lg">
-        Kliknutím na robota zobrazíte celkové vyhodnotenie vášho testu.
-      </p>
     </div>
   );
 }

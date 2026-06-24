@@ -1,7 +1,8 @@
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useAppNavigation } from '../utils/navigation';
 import { useTestFlow } from '../hooks/useTestFlow';
 import type { TestMode, EarSide } from '../types';
+import { useState } from 'react';
 
 const soundFiles = {
   sk: {
@@ -32,13 +33,14 @@ const soundFiles = {
 
 export default function ActiveTest() {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const { go } = useAppNavigation();
+  const { goHomeWithConfirm } = useAppNavigation();
 
   const isCalibration = searchParams.get('calibration') === '1';
   const mode = (searchParams.get('mode') || 'reproduktor') as TestMode;
   const side = (searchParams.get('side') as EarSide) || null;
   const lang = (searchParams.get('lang') || 'sk') as 'sk' | 'rom';
+  const [clickedChoice, setClickedChoice] = useState<string | null>(null);
 
   const {
     currentRound,
@@ -59,73 +61,67 @@ export default function ActiveTest() {
   const progress = ((currentRound + (isPlaying ? 1 : 0)) / 10) * 100;
 
   return (
-    <div className="">
-      <div className="">
-        <header className="">
-          <h1 className="">
-            {isCalibration ? "Kalibračný test" : "Aplikácia pre rečovú audiometriu"}
-          </h1>
-        </header>
+    <div>
+      <header><h1>{isCalibration ? "Kalibračný test" : "Aplikácia pre rečovú audiometriu"}</h1></header>
 
-        <p>Nápoveda: Stlačte tlačidlo pre spustenie testu a kliknutím vyberte obrázok prislúchajúci ku prehranému zvuku.</p>
+      <p className='action-message'>Nápoveda: Stlačte tlačidlo pre spustenie testu a kliknutím vyberte obrázok prislúchajúci ku prehranému zvuku.</p>
 
-        {/* Progress Bar */}
-        <div className="">
-          <div className="">
-            Kolo <span className="">{currentRound + 1}</span> z 10
-          </div>
-          <div className="">
-            <div
+      {/* Progress Bar */}
+      <div className="progress-container">
+        <div className="progress-label">
+          Kolo <span className="">{currentRound + 1}</span> z 10
+        </div>
+        <div className="progress-bar">
+          <div
+            className="progress-fill"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Start Button */}
+      {!isPlaying && currentRound === 0 && (
+        <button
+          onClick={startTest}
+          className="btn-primary"
+        >
+          <span>Spustiť test</span>
+        </button>
+      )}
+
+      {/* Pictures Grid */}
+      <div className="choices">
+        {words.map((word) => (
+          <div
+            key={word}
+            id={word}
+            onClick={() => {
+              setClickedChoice(word);
+
+              setTimeout(() => {
+                setClickedChoice(null);
+              }, 750);
+
+              handleChoice(word);
+            }}
+            className={`choice ${clickedChoice === word ? "clicked" : ""}`}
+          >
+            <img
+              src={`/assets/${lang}/images/${word}.jpg`}
+              alt={word}
               className=""
-              style={{ width: `${progress}%` }}
             />
           </div>
-        </div>
+        ))}
+      </div>
 
-        {/* Start Button */}
-        {!isPlaying && currentRound === 0 && (
-          <div className="">
-            <button
-              onClick={startTest}
-              className=""
-            >
-              Spustiť test
-            </button>
-          </div>
-        )}
-
-        {/* Pictures Grid */}
-        <div className="">
-          {words.map((word) => (
-            <div
-              key={word}
-              id={word}
-              onClick={() => handleChoice(word)}
-              className=""
-            >
-              <img
-                src={`/assets/${lang}/images/${word}.jpg`}
-                alt={word}
-                className=""
-              />
-            </div>
-          ))}
-        </div>
-
-        {isPlaying && (
-          <div className="">
-            🎵 Počúvajte pozorne... Kliknite na správny obrázok
-          </div>
-        )}
-
-        <div className="">
-          <button
-            onClick={() => navigate(`/?lang=${lang}`)}
-            className=""
-          >
-            Ukončiť test a vrátiť sa domov
-          </button>
-        </div>
+      <div className="outer">
+        <button
+          onClick={goHomeWithConfirm}
+          className="btn-primary"
+        >
+          Ukončiť test a vrátiť sa domov
+        </button>
       </div>
     </div>
   );

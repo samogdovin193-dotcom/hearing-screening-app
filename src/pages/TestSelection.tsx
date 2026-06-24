@@ -4,46 +4,47 @@ export default function TestSelection() {
   const { go } = useAppNavigation();
 
   return (
-    <div className="">
-      <h1 className="">Nastavme si ušká</h1>
+    <div>
+      <header>
+        <h1>Nastavme si ušká</h1>
+      </header><br />
 
-      <div 
-            className=""
-          >
-            <img 
-              src="/assets/sk/images/usi_zajac.jpg"
-            />
-          </div>
-          <p className="">
-            Mám dve ušká<br />
-            na obe,<br />
-            reproduktor pomôže.<br />
-            Ak chcem skúšať najprv pravé<br />
-            a potom zas, druhé, ľavé<br />
-            nasadím si slúchadlá<br />
-            ako také tykadlá ...
-          </p><br />
-          <p className="">
-            Kuk :). Tu si môžeš vybrať, či chceš na testovanie použiť:
-          </p>
-          <p className="">
-            - vstavaný reproduktor tvojho zariadenia (mobilu, tabletu, počítača), alebo<br />
-            - chceš otestovať každé uško zvášť pomocou slúchadiel. :)
-          </p><br />
+      <img className='img-zajac' src="/assets/sk/images/usi_zajac.jpg"/>
+      <br />
 
-      <div className="">
+      <p className="action-message purple">
+        Mám dve ušká          <br />
+        na obe,               <br />
+        reproduktor pomôže.   <br />
+
+        Ak chcem skúšať najprv pravé  <br />
+        a potom zas, druhé, ľavé      <br />
+        nasadím si slúchadlá          <br />
+        ako také tykadlá ...          <br />
+      </p>
+
+      <p className="text-simple"><br />
+        <b>Kuk :). Tu si môžeš vybrať, či chceš na testovanie použiť: </b>
+        <br /><br />
+        - <i><b>vstavaný reproduktor</b></i> tvojho zariadenia (mobilu, tabletu, počítača), alebo
+        <br />
+        - chceš <i>otestovať každé uško zvášť <b> pomocou slúchadiel.</b> :)</i>
+        <br /><br />
+      </p>
+
+      <div className="outer">
         <button
           onClick={() => go("/manual", { mode: "reproduktor" })}
-          className=""
+          className="button"
         >
           Reproduktor
         </button>
 
         <button
           onClick={() => go("/select-ear")}
-          className=""
+          className="button"
         >
-          Slúchadlá (ľavé / pravé ucho)
+          Slúchadlá
         </button>
       </div>
     </div>

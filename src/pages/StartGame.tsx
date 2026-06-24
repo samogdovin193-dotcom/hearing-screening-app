@@ -1,9 +1,9 @@
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useAppNavigation } from '../utils/navigation';
 
 export default function StartGame() {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const { goHomeWithConfirm } = useAppNavigation();
   const { go } = useAppNavigation();
 
   const mode = searchParams.get('mode') || 'reproduktor';
@@ -20,60 +20,39 @@ export default function StartGame() {
   };
 
   return (
-    <div className="">
-      <div className="">
-        <header className="">
-          <h1 className="">Kartičky robota Tomáša</h1>
-        </header>
+    <div>
+      <header><h1>Kartičky robota Tomáša</h1></header>
 
-        <p className="">
-          Teraz pomôž robotovi Tomášovi priradiť obrázok ku každému slovu, ktoré budeš počuť.
-        </p>
+      <p className="action-message">Teraz pomôž robotovi Tomášovi priradiť obrázok ku každému slovu, ktoré budeš počuť.</p>
 
-        {/* Big Robot Clickable Image */}
-        <div className="">
-          <div 
-            onClick={startTest}
-            className=""
-          >
-            <img 
-              src={`/assets/${lang}/images/default.gif`} 
-              alt="Spustiť hru" 
-              className=""
-            />
-          </div>
-        </div>
+      {/* Big Robot Clickable Image */}
+      <div 
+        onClick={startTest}
+        className="start-game"
+      >
+        <img 
+          src={`/assets/${lang}/images/default.gif`} 
+          alt="Spustiť hru" 
+          className="start-game-img"
+        />
+      </div>
 
-        <div className="">
-          <p className="">Skríningový test sa automaticky ukončí:</p>
-          <ul className="">
-            <li className="">
-              <span className="">•</span>
-              ak prejde cez všetkých 10 kôl
-            </li>
-            <li className="">
-              <span className="">•</span>
-              po 3 po sebe idúcich nesprávnych odpovediach
-            </li>
-            <li className="">
-              <span className="">•</span>
-              ak vyprší čas 15s po prehraní nahrávky a neklikne sa na žiaden obrázok
-            </li>
-          </ul>
-          <p className="">
-            (Test spustíš kliknutím na robota)
-          </p>
-        </div>
+      <div>
+        <p className='action-message'>Skríningový test sa automaticky ukončí:</p>
+        <p className='action-message'>- ak prejde cez všetkých 10 kôl</p>
+        <p className='action-message'>- po 3 po sebe idúcich nesprávnych odpovediach</p>
+        <p className='action-message'>- ak vyprší čas 15s po prehraní nahrávky a neklikne sa na žiaden obrázok</p>
+        <p className='action-message'>(Test spustíš kliknutím na robota)<br /><br /></p>
+      </div>
 
-        {/* Navigation */}
-        <div className="">
-          <button onClick={() => go("/manual")}>
-            <img src="/assets/sk/images/back.png" alt="Späť" className="" />
-          </button>
-          <button onClick={() => navigate(`/?lang=${lang}`)} className="">
-            <img src="/assets/sk/images/home.png" alt="Domov" className="" />
-          </button>
-        </div>
+      {/* Navigation */}
+      <div className="outer">
+        <button onClick={() => go("/manual")} className='menu-button'>
+          <img src="/assets/sk/images/back.png" alt="Späť" className="menu-btn" />
+        </button>
+        <button onClick={goHomeWithConfirm} className="menu-button">
+          <img src="/assets/sk/images/home.png" alt="Domov" className="menu-btn" />
+        </button>
       </div>
     </div>
   );
