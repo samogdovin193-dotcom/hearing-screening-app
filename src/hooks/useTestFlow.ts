@@ -1,40 +1,47 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Answer, TestMode, EarSide } from '../types';
 import { shuffleArray, dbToVolume } from '../lib/utils';
+import { getSelectedTestWords, revokeTestWordObjectUrls, type TestWord } from '../lib/testWords';
 
 const TOTAL_ROUNDS = 10;
 const DBFS_LEVELS = [0, -10, -20, -30, -35, -35, -40, -40, -45, -45];
 
-const soundFiles = {
-  sk: {
-    bicykel: "bicykel.wav",
-    auto: "auto.wav",
-    lietadlo: "lietadlo.wav",
-    autobus: "autobus.wav",
-    vtak: "vtak.wav",
-    sova: "sova.wav",
-    mys: "mys.wav",
-    macka: "macka.wav",
-    dzus: "dzus.wav",
-    cokolada: "cokolada.wav",
-  },
+const getLevelsStorageKey = (language: Language) => {
+  return language === "rom" ? "customDbfsLevelsROM" : "customDbfsLevels";
+};
 
-  rom: {
-    babika: "R_babika.wav",
-    chlieb: "R_chlieb.wav",
-    hrad: "R_hrad.wav",
-    jablko: "R_jablko.wav",
-    macka: "R_macka.wav",
-    miska: "R_miska.wav",
-    noha: "R_noha.wav",
-    okno: "R_okno.wav",
-    stolik: "R_stolik.wav",
-    zaba: "R_zaba.wav",
+const getDbfsLevelForRound = (language: Language, roundIndex: number) => {
+  const level = 10 - roundIndex;
+  const fallbackDb = DBFS_LEVELS[roundIndex];
+
+  const savedLevels = localStorage.getItem(getLevelsStorageKey(language));
+
+  if (!savedLevels) {
+    return fallbackDb;
   }
-} as const;
+
+  try {
+    const parsedLevels = JSON.parse(savedLevels);
+    const dbValue = Number(parsedLevels[level]);
+
+    if (Number.isNaN(dbValue) || dbValue < -60 || dbValue > 0) {
+      return fallbackDb;
+    }
+
+    return dbValue;
+  } catch (error) {
+    console.error("Chyba pri načítaní hlasitosti:", error);
+    return fallbackDb;
+  }
+};
+
+const areWordOrdersEqual = (a: TestWord[], b: TestWord[]) => {
+  if (a.length !== b.length) return false;
+
+  return a.every((word, index) => word.id === b[index]?.id);
+};
 
 type Language = 'sk' | 'rom';
-type WordKey<L extends Language> = keyof typeof soundFiles[L];
 
 export function useTestFlow(
   mode: TestMode,
@@ -49,7 +56,8 @@ export function useTestFlow(
     wrongInRow: 0,
     answerHistory: [] as Answer[],
     isPlaying: false,
-    randomSequence: [] as string[],
+    randomSequence: [] as TestWord[],
+    displayWords: [] as TestWord[],
   });
 
   // --- PURE JS-LIKE STATE ---
@@ -69,29 +77,54 @@ export function useTestFlow(
   // INIT (same as JS)
   // -------------------------
   useEffect(() => {
-    const words = Object.keys(soundFiles[language]) as WordKey<typeof language>[];
+    let cancelled = false;
+    let loadedWords: TestWord[] = [];
 
-    setState(prev => ({
-      ...prev,
-      randomSequence: shuffleArray(words)
-    }));
+    const loadWords = async () => {
+      const words = await getSelectedTestWords(language);
+
+      if (cancelled) {
+        revokeTestWordObjectUrls(words);
+        return;
+      }
+
+      loadedWords = words;
+
+      const audioSequence = shuffleArray(words);
+      let displaySequence = shuffleArray(words);
+
+      if (words.length > 1) {
+        while (areWordOrdersEqual(audioSequence, displaySequence)) {
+          displaySequence = shuffleArray(words);
+        }
+      }
+
+      setState(prev => ({
+        ...prev,
+        randomSequence: audioSequence,
+        displayWords: displaySequence,
+      }));
+    };
+
+    loadWords();
+
+    return () => {
+      cancelled = true;
+      revokeTestWordObjectUrls(loadedWords);
+    };
   }, [language]);
 
   // -------------------------
   // AUDIO PATH (same logic)
   // -------------------------
-  const getAudioPath = useCallback((word: string): string => {
-    let folder = `/assets/${language}/audio/`;
-
+  const getAudioPath = useCallback((word: TestWord): string => {
     if (mode === "sluchadla") {
-      if (side === "lave") folder = `/assets/${language}/audio_lave_ucho/`;
-      if (side === "prave") folder = `/assets/${language}/audio_prave_ucho/`;
+      if (side === "lave") return word.audioUrls.left;
+      if (side === "prave") return word.audioUrls.right;
     }
 
-    const file = soundFiles[language][word as WordKey<typeof language>];
-
-    return `${folder}${file}`;
-  }, [mode, side, language]);
+    return word.audioUrls.speaker;
+  }, [mode, side]);
 
   // -------------------------
   // FINISH (JS equivalent saveAndFinish)
@@ -125,12 +158,17 @@ export function useTestFlow(
 
     const word = state.randomSequence[currentRoundRef.current];
 
+    if (!word) return;
+
     const audio = new Audio(getAudioPath(word));
-    audio.volume = dbToVolume(DBFS_LEVELS[currentRoundRef.current]);
+
+    const dbLevel = getDbfsLevelForRound(language, currentRoundRef.current);
+    audio.volume = dbToVolume(dbLevel);
 
     audioRef.current = audio;
 
-    console.log(`Kolo ${currentRoundRef.current + 1}/${TOTAL_ROUNDS} | ` +`Úroveň: ${10 - currentRoundRef.current} | ` +`Slovo: ${word}`);
+    console.log(`Kolo ${currentRoundRef.current + 1}/${TOTAL_ROUNDS} | ` +`Úroveň: ${10 - currentRoundRef.current} | ` +`dBFS: ${dbLevel} | ` +`Slovo: ${word.displayName}`);
+    
     audio.play().catch(console.error);
 
     // 15s timeout
@@ -142,12 +180,14 @@ export function useTestFlow(
       const roundIndex = currentRoundRef.current;
       const word = state.randomSequence[roundIndex];
 
+      if (!word) return;
+
       wrongInRowRef.current += 1;
       wrongRef.current += 1;
 
       historyRef.current.push({
         level: 10 - roundIndex,
-        correct: word,
+        correct: word.displayName,
         user: "(nepočul)"
       });
 
@@ -182,7 +222,7 @@ export function useTestFlow(
   // -------------------------
   // HANDLE CLICK
   // -------------------------
-  const handleChoice = useCallback((userChoice: string) => {
+  const handleChoice = useCallback((userChoice: TestWord) => {
   if (!isPlayingRef.current) return;
 
   if (timeoutTimer.current) {
@@ -192,7 +232,10 @@ export function useTestFlow(
 
   const roundIndex = currentRoundRef.current;
   const correct = state.randomSequence[roundIndex];
-  const isCorrect = userChoice === correct;
+
+  if (!correct) return;
+
+  const isCorrect = userChoice.id === correct.id;
 
   if (isCorrect) correctRef.current++;
   else wrongRef.current++;
@@ -201,10 +244,10 @@ export function useTestFlow(
   wrongInRowRef.current = newWrongInRow;
 
   historyRef.current.push({
-      level: 10 - roundIndex,
-      correct,
-      user: userChoice
-    });
+    level: 10 - roundIndex,
+    correct: correct.displayName,
+    user: userChoice.displayName
+  });
 
   const nextRound = roundIndex + 1;
   currentRoundRef.current = nextRound;
@@ -220,7 +263,8 @@ export function useTestFlow(
     wrongInRow: newWrongInRow,
     answerHistory: historyRef.current,
     isPlaying: !shouldEnd,
-    randomSequence: state.randomSequence
+    randomSequence: state.randomSequence,
+    displayWords: state.displayWords,
   };
 
   setState(updated);
@@ -255,7 +299,8 @@ export function useTestFlow(
     wrongInRow: 0,
     answerHistory: [],
     isPlaying: true,
-    randomSequence: state.randomSequence
+    randomSequence: state.randomSequence,
+    displayWords: state.displayWords,
   });
 
   scheduleNextSound();

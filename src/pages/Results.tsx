@@ -34,9 +34,50 @@ const romMap: Record<string, string> = {
   zaba: "žaba",
 };
 
-const levelToDbMap: Record<number, string> = {
-  10: "0 dBFS", 9: "-10 dBFS", 8: "-20 dBFS", 7: "-30 dBFS", 6: "-35 dBFS",
-  5: "-35 dBFS", 4: "-40 dBFS", 3: "-40 dBFS", 2: "-45 dBFS", 1: "-45 dBFS"
+type Lang = 'sk' | 'rom';
+
+type DbfsLevels = Record<number, number>;
+
+const DEFAULT_LEVELS: DbfsLevels = {
+  10: 0,
+  9: -10,
+  8: -20,
+  7: -30,
+  6: -35,
+  5: -35,
+  4: -40,
+  3: -40,
+  2: -45,
+  1: -45,
+};
+
+const getLevelsStorageKey = (lang: Lang) => {
+  return lang === 'rom' ? 'customDbfsLevelsROM' : 'customDbfsLevels';
+};
+
+const getDbfsLevels = (lang: Lang): DbfsLevels => {
+  const savedLevels = localStorage.getItem(getLevelsStorageKey(lang));
+
+  if (!savedLevels) {
+    return DEFAULT_LEVELS;
+  }
+
+  try {
+    const parsedLevels = JSON.parse(savedLevels);
+
+    for (let level = 1; level <= 10; level++) {
+      const value = Number(parsedLevels[level]);
+
+      if (Number.isNaN(value) || value < -60 || value > 0) {
+        return DEFAULT_LEVELS;
+      }
+    }
+
+    return parsedLevels;
+  } catch (error) {
+    console.error('Chyba pri načítaní hlasitostí:', error);
+    return DEFAULT_LEVELS;
+  }
 };
 
 export default function Results() {
@@ -53,6 +94,8 @@ export default function Results() {
   const mode = (searchParams.get('mode') || 'reproduktor') as TestMode;
   const side = (searchParams.get('side') as EarSide) || null;
   const lang = (searchParams.get("lang") || "sk") as 'sk' | 'rom';
+
+  const dbfsLevels = getDbfsLevels(lang);
 
   // -------------------------
   // LOAD RESULT DATA
@@ -291,10 +334,8 @@ export default function Results() {
                 <tr key={idx}>
                   <td>{entry.level}</td>
                   <td>{wordMap[correctRaw] || correctRaw}</td>
-                  <td style={{ color: isCorrect ? "green" : "red" }}>
-                    {wordMap[userRaw] || userRaw}
-                  </td>
-                  <td>{levelToDbMap[entry.level] || "—"}</td>
+                  <td style={{ color: isCorrect ? "green" : "red" }}>{wordMap[userRaw] || userRaw}</td>
+                  <td>{dbfsLevels[entry.level] !== undefined ? `${dbfsLevels[entry.level]} dBFS` : "—"}</td>
                 </tr>
               );
             })}

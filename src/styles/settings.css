@@ -1,0 +1,438 @@
+/* ======================
+   Settings page
+====================== */
+.settings-page {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.settings-text {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 20px;
+    font-size: 19px;
+}
+
+.settings-card {
+    background: rgba(255, 255, 255, 0.82);
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 30px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.settings-card h2 {
+    margin-top: 0;
+    font-size: 30px;
+    text-align: center;
+}
+
+.settings-warning {
+    color: #8a1f11;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+.volume-grid,
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    gap: 18px;
+    margin: 25px 0;
+}
+
+.volume-grid label,
+.form-grid label {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    gap: 8px;
+}
+
+.volume-grid input,
+.form-grid input {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+}
+
+.word-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 22px;
+    margin: 25px 0;
+}
+
+.word-list-item {
+    border: 4px solid #aaa;
+    border-radius: 18px;
+    padding: 10px;
+    cursor: pointer;
+    background: rgba(255,255,255,0.75);
+    transition: 0.2s ease;
+    text-align: center;
+    position: relative;
+}
+
+.word-list-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+
+.word-list-item.selected {
+    border-color: #2ecc71;
+    background: rgba(46, 204, 113, 0.12);
+}
+
+.word-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: white;
+}
+
+.word-badge {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    padding: 4px 8px;
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+
+    text-shadow:
+        -1px -1px 0 #000,
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000;
+}
+
+.word-delete-ui {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+
+    background: rgba(220, 0, 0, 0.9);
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 24px;
+
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
+.word-list-item:hover .word-delete-ui {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.word-title {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.settings-navigation {
+    text-align: center;
+    margin: 40px 0;
+}
+
+@media (max-width: 700px) {
+    .volume-grid,
+    .form-grid,
+    .word-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+.settings-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.word-counters-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.word-counter {
+    margin: 10px 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+/* Menšie tlačidlá na settings stránke */
+.settings-page .button {
+    font-size: 25px;
+    padding: 10px 22px;
+    min-width: auto;
+}
+
+/* =========================================================
+   SETTINGS PAGE – NOTEBOOKY
+   max-width: 1200px
+   ========================================================= */
+
+@media (max-width: 1200px) {
+    .settings-page {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 0 18px;
+    }
+
+    .settings-text {
+        font-size: 17px;
+        margin: 16px auto;
+        padding: 0 10px;
+    }
+
+    .settings-card {
+        padding: 24px;
+        margin-bottom: 24px;
+        border-radius: 16px;
+    }
+
+    .settings-card h2 {
+        font-size: 26px;
+    }
+
+    .settings-warning {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+    .volume-grid,
+    .form-grid {
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .volume-grid label,
+    .form-grid label {
+        font-size: 18px;
+    }
+
+    .volume-grid input,
+    .form-grid input {
+        font-size: 16px;
+        padding: 9px;
+    }
+
+    .word-list {
+        grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+        gap: 18px;
+        margin: 20px 0;
+    }
+
+    .word-list-item {
+        border-width: 3px;
+        border-radius: 16px;
+        padding: 9px;
+    }
+
+    .word-title {
+        font-size: 18px;
+    }
+
+    .word-badge {
+        font-size: 12px;
+        padding: 3px 7px;
+    }
+
+    .word-delete-ui {
+        width: 24px;
+        height: 24px;
+        font-size: 17px;
+        line-height: 22px;
+    }
+
+    .settings-buttons {
+        gap: 16px;
+    }
+
+    .word-counters-row {
+        gap: 20px;
+    }
+
+    .settings-page .button {
+        font-size: 22px;
+        padding: 10px 22px;
+        min-width: auto;
+    }
+}
+
+/* =========================================================
+   SETTINGS PAGE – MOBILY
+   max-width: 600px
+   ========================================================= */
+
+@media (max-width: 600px) {
+    .settings-page {
+        max-width: 100%;
+        margin: 18px auto;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .settings-text {
+        max-width: 100%;
+        font-size: 15px;
+        margin: 12px auto;
+        padding: 0;
+        line-height: 1.45;
+    }
+
+    .settings-card {
+        padding: 16px;
+        margin-bottom: 18px;
+        border-radius: 14px;
+    }
+
+    .settings-card h2 {
+        font-size: 21px;
+        line-height: 1.25;
+    }
+
+    .settings-warning {
+        font-size: 15px;
+        line-height: 1.45;
+    }
+
+    .volume-grid,
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 16px 0;
+    }
+
+    .volume-grid label,
+    .form-grid label {
+        font-size: 14px;
+        gap: 6px;
+    }
+
+    .volume-grid input,
+    .form-grid input {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 15px;
+        padding: 8px;
+        border-radius: 8px;
+    }
+
+    .settings-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .settings-buttons .button,
+    .settings-navigation .button,
+    #addWordBtn,
+    #saveSelectedWordsBtn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .word-counters-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .word-counter {
+        width: 100%;
+        font-size: 15px;
+    }
+
+    .word-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin: 16px 0;
+    }
+
+    .word-list-item {
+        border-width: 3px;
+        border-radius: 14px;
+        padding: 8px;
+    }
+
+    .word-list-item:hover {
+        transform: none;
+    }
+
+    .word-image-wrapper {
+        min-height: 95px;
+    }
+
+    .word-image-wrapper img {
+        width: 100%;
+        max-height: 90px;
+        object-fit: contain;
+    }
+
+    .word-title {
+        margin-top: 8px;
+        font-size: 15px;
+    }
+
+    .word-badge {
+        left: 6px;
+        top: 6px;
+        font-size: 10px;
+        padding: 3px 5px;
+    }
+
+    .word-delete-ui {
+        right: 6px;
+        top: 6px;
+        width: 24px;
+        height: 24px;
+        font-size: 16px;
+        line-height: 22px;
+        /* Na mobile neexistuje spoľahlivý hover,
+           preto zobrazíme X stále pri vlastných slovách.*/
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .settings-navigation {
+        margin: 24px 0;
+    }
+
+    .settings-page .button {
+        font-size: 15px;
+        padding: 6px 10px;
+        width: auto;
+        min-width: 0;
+        max-width: 220px;
+    }
+
+    .settings-buttons {
+        align-items: center;
+        gap: 8px;
+    }
+
+    .settings-navigation {
+        display: flex;
+        justify-content: center;
+    }
+}

@@ -9,6 +9,7 @@ import StartGame from './pages/StartGame';
 import ActiveTest from './pages/ActiveTest'
 import Finish from './pages/Finish';
 import Results from './pages/Results'
+import Settings from './pages/Settings';
 
 function App() {
   useEnsureLang();
@@ -17,6 +18,7 @@ function App() {
     <div className="min-h-screen bg-slate-50">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/select" element={<TestSelection />} />
         <Route path="/select-ear" element={<TestEarSelection />} />
         <Route path="/manual" element={<Manual />} />

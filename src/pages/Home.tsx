@@ -48,7 +48,10 @@ export default function Home() {
 
         {/* Settings button */}
         <div className='settings-wrapper'>
-          <button id='settings-btn'>
+          <button
+            id="settings-btn"
+            onClick={() => go("/settings")}
+          >
             <img src="/assets/sk/images/settings.png" alt="Nastavenia" />
           </button>
         </div>

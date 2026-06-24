@@ -4,33 +4,6 @@ import { useTestFlow } from '../hooks/useTestFlow';
 import type { TestMode, EarSide } from '../types';
 import { useState } from 'react';
 
-const soundFiles = {
-  sk: {
-    bicykel: "bicykel.wav",
-    auto: "auto.wav",
-    lietadlo: "lietadlo.wav",
-    autobus: "autobus.wav",
-    vtak: "vtak.wav",
-    sova: "sova.wav",
-    mys: "mys.wav",
-    macka: "macka.wav",
-    dzus: "dzus.wav",
-    cokolada: "cokolada.wav",
-  },
-  rom: {
-    babika: "R_babika.wav",
-    chlieb: "R_chlieb.wav",
-    hrad: "R_hrad.wav",
-    jablko: "R_jablko.wav",
-    macka: "R_macka.wav",
-    miska: "R_miska.wav",
-    noha: "R_noha.wav",
-    okno: "R_okno.wav",
-    stolik: "R_stolik.wav",
-    zaba: "R_zaba.wav",
-  }
-} as const;
-
 export default function ActiveTest() {
   const [searchParams] = useSearchParams();
   const { go } = useAppNavigation();
@@ -47,8 +20,8 @@ export default function ActiveTest() {
     isPlaying,
     startTest,
     handleChoice,
+    displayWords,
   } = useTestFlow(mode, side, lang, () => {
-    // Navigate to Finish page when test ends
     go('/finish', {
       mode,
       side,
@@ -57,7 +30,7 @@ export default function ActiveTest() {
     });
   });
 
-  const words = Object.keys(soundFiles[lang]);
+  const words = displayWords;
   const progress = ((currentRound + (isPlaying ? 1 : 0)) / 10) * 100;
 
   return (
@@ -80,7 +53,7 @@ export default function ActiveTest() {
       </div>
 
       {/* Start Button */}
-      {!isPlaying && currentRound === 0 && (
+      {!isPlaying && currentRound === 0 && words.length === 10 && (
         <button
           onClick={startTest}
           className="btn-primary"
@@ -93,10 +66,10 @@ export default function ActiveTest() {
       <div className="choices">
         {words.map((word) => (
           <div
-            key={word}
-            id={word}
+            key={word.id}
+            id={word.key}
             onClick={() => {
-              setClickedChoice(word);
+              setClickedChoice(word.id);
 
               setTimeout(() => {
                 setClickedChoice(null);
@@ -104,12 +77,11 @@ export default function ActiveTest() {
 
               handleChoice(word);
             }}
-            className={`choice ${clickedChoice === word ? "clicked" : ""}`}
+            className={`choice ${clickedChoice === word.id ? "clicked" : ""}`}
           >
             <img
-              src={`/assets/${lang}/images/${word}.jpg`}
-              alt={word}
-              className=""
+              src={word.imageUrl}
+              alt={word.displayName}
             />
           </div>
         ))}
