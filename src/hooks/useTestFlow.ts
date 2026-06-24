@@ -3,7 +3,7 @@ import type { Answer, TestMode, EarSide } from '../types';
 import { shuffleArray, dbToVolume } from '../lib/utils';
 
 const TOTAL_ROUNDS = 10;
-const DBFS_LEVELS = [0, -10, -20, -30, -35, -40, -45, -50, -55, -60];
+const DBFS_LEVELS = [0, -10, -20, -30, -35, -35, -40, -40, -45, -45];
 
 const soundFiles = {
   sk: {

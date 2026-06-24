@@ -1,0 +1,330 @@
+/* ======================
+   Shared styles
+====================== */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+body {   
+    background: url(assets/sk/images/ChatGPT_background.png) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+header {
+    color: #4CAF50;
+}
+
+header >h1 {
+    color: black; 
+    font-size: 60px;
+    text-align: center;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+@media (max-width: 1200px) {
+    header >h1 {
+        font-size: 42px;
+    }
+}
+@media (max-width: 600px) {
+    header >h1 {
+        font-size: 28px;
+    }
+}
+
+.robot-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.robot-wrapper--with-text {
+    gap: 40px;
+}
+
+.robot-img,
+.finish-robot-img {
+    object-fit: contain;
+}
+
+@media (max-width: 1200px) {
+    .robot-img{
+        width: 225px;
+        height: 350px;
+    }
+}
+@media (max-width: 600px) {
+    .robot-img{
+        width: 150px;
+        height: 240px;
+    }
+}
+
+.action-message {
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 28px;
+    line-height: 1.7;
+    margin: 10px;
+    text-align: center;
+    color: black;
+}
+
+@media (max-width: 1200px) {
+    .action-message {
+        font-size: 22px;
+    }
+}
+@media (max-width: 600px) {
+    .action-message {
+        font-size: 15px;
+    }
+}
+
+.purple {
+  color: purple;
+}
+
+.text-simple {
+    text-align: center;
+    color: black;
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 25px;
+}
+
+@media (max-width: 1200px) {
+    .text-simple {
+        font-size: 19px;
+    }
+}
+@media (max-width: 600px) {
+    .text-simple {
+        font-size: 13px;
+    }
+}
+
+.outer {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px 0;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.button {
+  padding: 25px 80px;
+  font-size: 35px;
+  display: block;
+  margin: 0 auto 40px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+@media (max-width: 1200px) {
+    .button{
+        padding: 20px 60px;
+        font-size: 28px;
+        margin: 0 auto 30px;
+    }
+}
+@media (max-width: 600px) {
+    .button{
+        padding: 18px 40px;
+        font-size: 20px;
+        margin: 0 auto 20px;
+    }
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.buttons-container {
+    text-align:center;
+    margin: 40px auto;
+}
+@media (max-width: 1200px) {
+    .buttons-container{
+        margin: 30px auto;
+    }
+}
+@media (max-width: 600px) {
+    .buttons-container{
+        margin: 20px auto;
+    }
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.menu-btn {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  display: block;
+  margin: 50px;
+}
+
+@media (max-width: 1200px) {
+    .menu-btn{
+        width: 75px !important;
+        height: 75px !important;
+        margin: 30px;
+    }
+}
+@media (max-width: 600px) {
+    .menu-btn{
+        width: 50px !important;
+        height: 50px !important;
+        margin: 10px;
+    }
+}
+
+.menu-btn:hover {
+    transform: scale(1.05);
+}
+
+.glass-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    backdrop-filter: blur(6px);
+}
+@media (max-width: 1200px) {
+    .glass-container{
+        margin: 35px auto;
+    }
+}
+@media (max-width: 600px) {
+    .glass-container{
+        margin: 20px auto;
+    }
+}
+
+.btn-primary {
+    padding: 20px 25px;
+    font-size: 22px;
+    display: flex;
+    margin: 30px auto;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 15px;
+}
+
+@media (max-width: 1200px) {
+    .btn-primary {
+        font-size: 18px;
+        padding: 15px 20px;
+    }
+}
+@media (max-width: 600px) {
+    .btn-primary {
+        font-size: 15px;
+        padding: 10px 15px;
+    }
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0 0 0 / 0.4);
+}
+
+.calibration-btn {
+    gap: 14px;
+}
+
+.calibration-btn:active {
+    transform: translateY(0);
+}
+
+.calibration-btn.stop {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+}/* Stav STOP → červené + zmena ikony */
+
+.calibration-btn .icon {
+    font-size: 32px;
+    line-height: 1;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 1200px) {
+    .calibration-btn .icon {
+        font-size: 25px;
+    }
+}
+@media (max-width: 600px) {
+    .calibration-btn .icon {
+        font-size: 18px;
+    }
+}
+
+.calibration-btn.stop .icon {
+    transform: scale(1.1);
+}/* Keď je spustené, zmeníme ▶ → ⏹ */
+
+.big-btn {
+    padding: 20px 30px;
+    font-size: 22px;
+    display: flex;
+    margin: 30px auto;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+}
+@media (max-width: 1200px) {
+    .big-btn{
+        font-size: 18px;
+        padding: 15px 25px;
+    }
+}
+@media (max-width: 600px) {
+    .big-btn{
+        font-size: 15px;
+        padding: 10px 20px;
+    }
+}
+
+.green { 
+    background: #4CAF50; color: white;
+}
+
+.red { 
+    background: #e74c3c; color: white;
+}
+
+.red:hover {
+    background-color: #c43525 !important
+}

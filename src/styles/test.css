@@ -1,0 +1,117 @@
+/* ======================
+   Active test page
+====================== */
+
+.progress-container {
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: center;
+    font-family: 'Titillium Web', sans-serif;
+}
+@media (max-width: 1200px) {
+    .progress-container {
+        max-width: 600px;
+    }
+}
+@media (max-width: 600px) {
+    .progress-container {
+        max-width: 400px;
+    }
+}
+
+.progress-label {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2d3436;
+    margin-bottom: 10px;
+}
+@media (max-width: 1200px) {
+    .progress-label {
+        font-size: 22px;
+    }
+}
+@media (max-width: 600px) {
+    .progress-label {
+        font-size: 18px;
+    }
+}
+
+.progress-bar {
+    height: 30px;
+    background: #ddd;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+@media (max-width: 1200px) {
+    .progress-bar {
+        height: 22px;
+    }
+}
+@media (max-width: 1200px) {
+    .progress-bar {
+        height: 16px;
+    }
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00b894, #00cec9);
+    border-radius: 15px;
+    transition: width 0.6s ease;
+    box-shadow: 0 0 15px rgba(0, 206, 169, 0.5);
+}
+
+.choices {
+    margin: 20px auto 0;   /* ⬅ this centers the grid */
+    padding: 0 20px;   /* space from screen edges */
+    display: grid;
+    max-width: 1200px;
+    gap: 15px;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+@media (max-width: 600px) {
+    .choices {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 360px;
+    }
+    .choices .choice:nth-last-child(1) {
+        grid-column: 2;
+    }
+}
+
+.choice {
+    justify-self: center;
+    border: 4px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: auto;
+    width: 85%;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+@media (min-width: 1201px) and (max-width: 1400px) {
+    .choice {
+        width: 75%;
+    }
+}
+
+.choice img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.choice:hover {
+    cursor: pointer;
+    background: rgb(122, 136, 141);
+}
+
+.choice.clicked {
+    background: rgb(0, 183, 255);
+    transform: scale(1.05);
+}

@@ -1,0 +1,110 @@
+/* ======================
+   Finish page
+====================== */
+
+.finish-robot-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0;
+}
+
+.finish-robot-section {
+    cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+    .finish-robot-img {
+        width: min(80vw, 350px);
+        height: auto;
+    }
+}
+@media (max-width: 600px) {
+    .finish-robot-img {
+        width: min(70vw, 260px);
+        height: auto;
+    }
+}
+
+.result-container {
+    text-align: center;
+    margin: 40px auto;
+    max-width: 600px;
+}
+
+/* Text blocks */
+.result-text {
+    font-size: 30px;
+    color: black;
+    margin: 20px;
+    margin-bottom: 30px;
+}
+@media (max-width: 1200px) {
+    .result-text {
+        font-size: 22px;
+        margin-bottom: 25px;
+    }
+}
+@media (max-width: 600px) {
+    .result-text {
+        font-size: 17px;
+        margin-bottom: 20px;
+    }
+}
+.result-success {
+    font-size: 42px;
+    color: black;
+    font-weight: bold;
+}
+@media (max-width: 1200px) {
+    .result-success {
+        font-size: 28px;
+    }
+}
+@media (max-width: 600px) {
+    .result-success {
+        font-size: 22px;
+    }
+}
+.result-error {
+    font-size: 32px;
+    color: #e74c3c;
+}
+@media (max-width: 1200px) {
+    .result-error {
+        font-size: 26px;
+    }
+}
+@media (max-width: 600px) {
+    .result-error {
+        font-size: 20px;
+    }
+}
+
+.finish-btn {
+    font-size: 22px;
+    padding: 18px 40px;
+    margin: 15px;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}
+@media (max-width: 1200px) {
+    .finish-btn {
+        font-size: 18px;
+    }
+}
+@media (max-width: 600px) {
+    .finish-btn {
+        font-size: 15px;
+    }
+}
+
+.btn-save {
+    background: #27ae60;
+}
+
+.btn-discard {
+    background: #e74c3c;
+}

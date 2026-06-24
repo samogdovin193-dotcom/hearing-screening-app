@@ -1,0 +1,240 @@
+/* ======================
+   Results page
+====================== */
+.text {
+    font-size: 28px;
+    line-height: 1.7;
+    text-align: center;
+    padding: 0 30px;   /* left & right */
+}
+@media (max-width: 1200px) {
+    .text {
+        font-size: 19px;
+    }
+}
+@media (max-width: 600px) {
+    .text {
+        font-size: 13px;
+    }
+}
+
+.text.percentage-small {
+    font-size: 20px;
+}
+@media (max-width: 1200px) {
+    .text.percentage-small {
+        font-size: 14px;
+    }
+}
+@media (max-width: 600px) {
+    .text.percentage-small {
+        font-size: 10px;
+    }
+}
+
+.no-comparison {
+    color: #e74c3c;
+    font-size: 28px;
+    font-weight: bold;
+}
+@media (max-width: 1200px) {
+    .no-comparison {
+        font-size: 22px;
+    }
+}
+@media (max-width: 600px) {
+    .no-comparison {
+        font-size: 15px;
+    }
+}
+
+.no-calibration-box {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f8f9fa;
+    border-radius: 20px;
+    margin: 50px 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+@media (max-width: 1200px) {
+    .no-calibration-box {
+        padding: 45px 15px;
+        margin: 40px 15px;
+        border-radius: 15px;
+    }
+}
+@media (max-width: 600px) {
+    .no-calibration-box {
+        padding: 30px 10px;
+        margin: 30px 10px;
+        border-radius: 10px;
+    }
+}
+
+.no-calibration-title {
+    color: #2c3e50;
+    font-size: 34px;
+    font-weight: 800;
+    margin: 0;
+}
+@media (max-width: 1200px) {
+    .no-calibration-title {
+        font-size: 26px;
+    }
+}
+@media (max-width: 600px) {
+    .no-calibration-title {
+        font-size: 18px;
+    }
+}
+
+.no-calibration-text {
+    color: #2c3e50;
+    font-size: 20px;
+    margin-top: 15px;
+}
+@media (max-width: 1200px) {
+    .no-calibration-text {
+        font-size: 16px;
+        margin-top: 10px;
+    }
+}
+@media (max-width: 600px) {
+    .no-calibration-text {
+        font-size: 12px;
+        margin-top: 5px;
+    }
+}
+
+.comparison-box {
+    background: #f8f9fa;
+    padding: 35px;
+    border-radius: 18px;
+    margin: 50px 0;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+@media (max-width: 1200px) {
+    .comparison-box {
+        padding: 28px;
+        border-radius: 14px;
+        margin: 40px 0;
+    }
+}
+@media (max-width: 600px) {
+    .comparison-box {
+        padding: 20px;
+        border-radius: 10px;
+        margin: 25px 0;
+    }
+}
+
+.comparison-text {
+    margin: 12px 0;
+    font-size: 28px;
+    color: #2c3e50;
+}
+@media (max-width: 1200px) {
+    .comparison-text {
+        margin: 10px 0;
+        font-size: 22px;
+    }
+}
+@media (max-width: 600px) {
+    .comparison-text {
+        margin: 8px 0;
+        font-size: 15px;
+    }
+}
+
+.comparison-meta {
+    color: #7f8c8d;
+}
+
+.comparison-interpretation {
+    margin-top: 40px;
+    text-align: left;
+}
+@media (max-width: 1200px) {
+    .comparison-interpretation {
+        margin-top: 30px;
+    }
+}
+@media (max-width: 600px) {
+    .comparison-interpretation {
+        margin-top: 20px;
+    }
+}
+
+.interpretation-text {
+    font-size: 24px;
+    text-align: left;
+    line-height: 1.5;
+}
+@media (max-width: 1200px) {
+    .interpretation-text {
+        font-size: 19px;
+    }
+}
+@media (max-width: 600px) {
+    .interpretation-text {
+        font-size: 14px;
+    }
+}
+
+table {
+    width: 85%;
+    margin: 40px auto;
+    border-collapse: collapse;
+    font-size: 20px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(5px);
+}
+@media (max-width: 1200px) {
+    table {
+        width: 80%;
+        margin: 30px auto;
+        font-size: 17px;
+        border-radius: 10px;
+    }
+}
+@media (max-width: 600px) {
+    table {
+        width: 75%;
+        margin: 20px auto;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px 14px;
+}
+
+th {
+    background-color: #f8f8f8;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(245, 245, 245, 0.9);
+}
+
+tr:hover {
+    background-color: rgba(230, 230, 230, 0.9);
+}
+
+.correct-answer {
+    color: #2e8b57;
+    font-weight: 600;
+}
+
+.wrong-answer {
+    color: #d32f2f;
+    font-weight: 600;
+}

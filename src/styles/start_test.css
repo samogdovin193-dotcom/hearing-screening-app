@@ -1,0 +1,26 @@
+/* ======================
+   Start game page
+====================== */
+
+.start-game {
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: auto; /* 2 equal columns */
+    justify-content: center; /* horizontal */
+}
+.start-game-img {
+    width: 250px;
+    max-width: 80vw;
+    height: auto;
+    cursor: pointer;
+}
+@media (max-width: 1200px) {
+    .start-game-img {
+        width: 200px;
+    }
+}
+@media (max-width: 600px) {
+    .start-game-img {
+        width: 150px;
+    }
+}
