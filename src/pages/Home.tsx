@@ -67,6 +67,7 @@ export default function Home() {
           <img
             src="/assets/sk/images/default.gif" 
             alt="Robot Tomáš" 
+            className='robot-img'
             onClick={() => go("/select")}
           />
         </div>
