@@ -17,31 +17,14 @@ A React-based hearing screening and speech audiometry application using picture 
   - Right ear
 
 - ⚙️ Language-specific settings
-- 🎚️ Adjustable volume levels for each test round
+- 🎚️ Adjustable dBFS volume levels for each test round
 - 🖼️ Picture-card based word recognition test
 - ✅ Select exactly 10 words for the test
-- ➕ Add custom words with:
-  - Image
-  - Speaker audio recording
-  - Left ear audio recording
-  - Right ear audio recording
-
+- ➕ Add custom words with image and audio recordings
 - ❌ Delete custom words
-- 🧹 Automatic calibration reset after confirmed changes to:
-  - Volume levels
-  - Selected word list
-  - Deleting selected custom words
-
-- 📊 Results page with:
-  - Speech hearing threshold
-  - Speech recognition threshold
-  - Comparison with calibration data and interpretation
-  - Answer table with:
-    - Correct answers
-    - Wrong answers
-    - dBFS level used in each round
-
-- 💾 Local browser storage using localStorage and IndexedDB
+- 🧹 Calibration reset after confirmed changes to volume levels or selected words
+- 📊 Results page with thresholds, answer table, and calibration comparison
+- 💾 Local browser storage using localStorage and IndexedDB through Dexie.js
 - 📱 Responsive layout
 
 ---
@@ -176,9 +159,7 @@ This prevents Slovak and Romani settings or calibration results from affecting e
 
 ## 🎚️ Settings System
 
-The settings page allows users to configure the test separately for each language version.
-
-Users can:
+The settings page allows users to:
 
 - Change dBFS volume levels for test rounds
 - Reset volume levels to default values
@@ -210,12 +191,6 @@ If a custom word is deleted and it was part of the selected word list, the app r
 
 ## 🎧 Calibration System
 
-Calibration data is stored separately by:
-
-- Language
-- Test mode
-- Ear side
-
 Calibration categories include:
 
 - Slovak speaker
@@ -236,26 +211,10 @@ During the test:
 - Audio recordings are played in a randomized order
 - Picture cards are displayed in a separate randomized order
 - The user selects the picture that matches the played audio
-- The app records correct and wrong answers
+- The app records answers
 - The test ends after all rounds or after the defined stopping condition
 
 If the saved word selection is invalid, for example fewer or more than 10 words are selected, the app falls back to the default word set for the current language.
-
----
-
-## 📊 Results
-
-The results page shows:
-
-- Speech hearing threshold
-- Speech recognition threshold
-- Comparison with calibration and interpretation
-- Answer table
-- Correct word
-- Selected word
-- dBFS level used in each round
-
-Custom words are displayed using their saved display names.
 
 ---
 
@@ -270,7 +229,7 @@ It uses:
   - Selected word IDs
   - Temporary test results
 
-- `IndexedDB` for:
+- `IndexedDB` through Dexie.js for:
   - Calibration data
   - Custom words
   - Custom word images and audio files
@@ -305,7 +264,9 @@ The app includes several safeguards:
 
 ## 📸 Preview
 
-![Hearing screening app](./public/assets/image.png)
+![Test screen](./public/assets/preview-test.png)
+![Settings screen](./public/assets/preview-settings.png)
+![Results screen](./public/assets/preview-results.png)
 
 ## 🌍 Live Demo
 
