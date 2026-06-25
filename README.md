@@ -274,7 +274,7 @@ The app includes several safeguards:
 
 ## 👨‍💻 Author
 
-Built by Samuel Gdovin.
+Built by Ing. Samuel Gdovin.
 A frontend developer focused on learning React through real-world projects.
 
 ---
