@@ -2,6 +2,9 @@
 
 A React-based hearing screening and speech audiometry application using picture cards and audio recordings. The app supports Slovak and Romani language versions, separate calibration modes, custom word selection, and user-defined test words.
 
+> This project is a React migration and modernization of my original diploma thesis application, which was first built using HTML, CSS, and vanilla JavaScript.
+> Original version: [Kartičky Robota Tomáš](https://github.com/samogdovin193-dotcom/RobotTomas)
+
 ---
 
 ## 🚀 Features
