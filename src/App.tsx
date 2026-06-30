@@ -15,7 +15,7 @@ function App() {
   useEnsureLang();
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/settings" element={<Settings />} />
