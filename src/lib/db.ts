@@ -24,10 +24,6 @@ const db = new Dexie('CalibrationDB') as Dexie & {
   calibration: EntityTable<CalibrationRecord, 'id'>;
 };
 
-/**
- * IMPORTANT:
- * category is now the MAIN INDEX for filtering
- */
 db.version(3).stores({
   calibration: '++id, category, mode, side, lang, timestamp'
 });
