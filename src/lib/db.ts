@@ -16,7 +16,7 @@ export interface CalibrationRecord {
   mode: 'reproduktor' | 'sluchadla';
   side: 'lave' | 'prave' | null;
   lang: 'sk' | 'rom';
-  category: string; // 👈 PRIMARY KEY LOGIC
+  category: string; // MAIN INDEX/FILTER KEY
   timestamp: string;
 }
 
